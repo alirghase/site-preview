@@ -123,7 +123,7 @@
   .about p { margin-bottom: 16px; }
   .facts { list-style: none; margin: 22px 0; border-top: 1px solid var(--divider); }
   .facts li { display: grid; grid-template-columns: 9rem 1fr; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--divider); font-size: 15.5px; }
-  .facts li span:first-child { font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+  .facts li > span:first-child { font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
   .contact { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
   .contact a { font-size: 14.5px; text-decoration: none; border: 1px solid var(--divider); padding: 6px 14px; border-radius: 6px; }
   .contact a:hover { border-color: var(--accent); color: var(--accent-ink); }
@@ -187,73 +187,90 @@
 <footer><div class="wrap"><span>© 2026 A- · Public and synthetic data only.</span><span>Written in Obsidian, published from notes.</span></div></footer>
 
 <script>
-// Each project is a series of write-ups, published in the order it's built.
+// Each project is a series of write-ups, published in the order it's built. Dates are planned.
 const PROJECTS = [
-  { id: 'northgate', theme: 'agents', status: 'Now', name: 'Can an AI analyst answer questions about UK companies without making up a number?', sub: 'The Northgate Analyst',
-    what: 'An agent on Google Cloud that looks up the UK company register and official statistics, and cites every figure.',
+  { id: 'site-account', theme: 'nature', status: 'Now', launch: '16 Jan 2027', name: 'What is this land\'s nature, and what is it worth alive?', sub: 'Site Account',
+    what: 'Draw a boundary and get a natural-asset account: how much nature there is, how healthy it is, what it gives each year, and what it\'s worth as a range. Every number is cited.',
+    who: 'Land trusts, estates, natural-capital funds and nature recovery officers',
+    ships: 'A web app, an API and MCP server, and the write-ups below',
+    number: 'How often the agent cites the wrong source for a right number, with and without the ledger gate',
+    stack: ['loopkit', 'nature-mcp', 'BigQuery GIS', 'Cloud Run', 'Workflows', 'Vertex AI', 'Terraform'],
     parts: [
-      'Who the agent is, and the test it must pass',
-      'Giving it tools: an MCP server for Companies House',
-      'Four agents instead of one',
-      'Making it safe to share',
-      'Measuring it: evals, traces and cost',
-      'Letting it act, safely',
-      'Memory without stale numbers',
-      'The same agent without a framework',
+      ['How wide is the honest range? A site\'s nature as present value', '26 Jan'],
+      ['Nature or prices? Splitting a natural asset\'s value change', '9 Feb'],
+      ['Right number, wrong referent', '23 Feb'],
+      ['Field note: what the first users needed', 'After launch'],
     ] },
-  { id: 'gcp-lab', theme: 'foundations', status: 'Now', name: 'Can I run Google Cloud without ever being surprised by a bill?', sub: 'My cloud lab',
-    what: 'My own Google Cloud setup, with a hard spending cap. Everything else runs on it, including this site.',
+  { id: 'survey-desk', theme: 'nature', status: 'Next', launch: '4 Mar 2027', name: 'What lives here, measured well enough to defend?', sub: 'Survey Desk',
+    what: 'Turns acoustic recordings into a biodiversity measurement: which species are there, with honest error margins. An agent plans the survey and builds detectors while a person labels. No fieldwork.',
+    who: 'Ecologists at habitat banks and wildlife trusts',
+    ships: 'A web app, an API and MCP server, and the write-ups below',
+    number: 'How many labels a detector needs to reach its target precision',
+    stack: ['Perch 2.0', 'BigQuery VECTOR_SEARCH', 'Pub/Sub', 'Cloud Run jobs', 'scikit-learn'],
     parts: [
-      'A landing zone with a kill switch',
-      'This site, published from Obsidian',
-      'Drafting posts with Gemini',
+      ['How many labels does a detector need?', '21 Mar'],
+      ['Detection is not condition: what acoustic surveys can and can\'t measure', '30 Mar'],
+      ['Field note: what the first users needed', 'After launch'],
     ] },
-  { id: 'bike', theme: 'data', status: 'Next', name: 'Will there be a bike?', sub: 'Forecasting London\'s Santander Cycles',
-    what: 'Predicting how many Santander bikes each London dock will have, from TfL\'s live feed.',
+  { id: 'claim-check', theme: 'nature', status: 'Later', launch: '30 May 2027', name: 'Does this nature claim survive its own numbers?', sub: 'Claim Check',
+    what: 'Redoes the maths behind a carbon or biodiversity credit, or a company\'s nature claim, and tests it against the evidence from Site Account and Survey Desk.',
+    who: 'Credit buyers, NGO analysts and journalists',
+    ships: 'A web app, an API with webhooks, a check_claim MCP tool, and the write-ups below',
+    number: 'How often the agent recomputes an issuer\'s own figure, five runs out of five',
+    stack: ['Vision retrieval', 'Sandboxed recompute', 'Vertex AI batch', 'Cloud Run, egress denied'],
     parts: [
-      'Polling TfL every two minutes',
-      'A warehouse in BigQuery',
-      'Batch jobs that don\'t break',
-      'Serving the data',
-      'The model',
-      'Keeping the model honest',
-      'A public app',
-    ] },
-  { id: 'portfolio', theme: 'agents', status: 'Later', name: 'How would a bank build AI agents?', sub: 'Meridian, Sentinel and Keystone',
-    what: 'Three agent systems built the way a bank would build them.',
-    parts: [
-      'Meridian: investment research with paper trading',
-      'Sentinel: guardrails and a red team',
-      'Keystone: preparing a mortgage case',
+      ['Can an agent recompute a credit\'s own arithmetic?', '11 Jun'],
+      ['Can a matched-reference test survive confounding?', '18 Jun'],
+      ['What can my agents touch? Permissions, sandboxes and audit trails', '25 Jun'],
+      ['Field note: what the first users needed', 'After launch'],
     ] },
 ];
 const THEMES = [
-  { id: 'agents', name: 'Building AI agents', what: 'Agents, tools, evals and guardrails, mostly on Google Cloud.' },
-  { id: 'data', name: 'Data and ML', what: 'Pipelines, warehouses and models that run on live data.' },
-  { id: 'foundations', name: 'Cloud foundations', what: 'The setup everything else runs on.' },
+  { id: 'nature', name: 'Trustworthy numbers for nature', what: 'Three agent products in one chain: account, measure, verify. Free public data, and no figure without a source. "Inconclusive" is always an allowed answer.' },
 ];
-// Small apps for my own daily use. Not write-up series, so they're listed separately.
-const APPS = [
-  { name: 'Farsi Sentence Vault', status: 'Live', what: 'Drills for turning English into Farsi sentences fast. Works offline on my phone, on the commute.',
+// Reusable pieces spun off from the three, each its own open-source package.
+const SPINOFFS = [
+  { name: 'loopkit', what: 'My own agent loop: typed events, replayable runs, token and £ budgets, and resume after a crash. No framework underneath.' },
+  { name: 'nature-mcp', what: 'An MCP server for nature data, with typed tools, errors an agent can correct itself from, and API keys.' },
+  { name: 'The Instrument', what: 'An eval harness with confidence intervals, an LLM judge checked against my own labels, and a gate that blocks a bad deploy.' },
+  { name: 'ledger', what: 'A hash-chained record of every figure and where it came from. The agent can\'t state a number that isn\'t in it.' },
+  { name: 'valuer', what: 'Present values as Monte Carlo ranges, with units, price years and a check against double counting.' },
+];
+// After the three, in order.
+const LATER = [
+  ['A coding agent, scored on SWE-bench Pro', 'Built on loopkit'],
+  ['Alert Desk: money-laundering alerts and scam intervention', 'Synthetic data'],
+  ['Fair Answer: a support benchmark on ombudsman decisions', ''],
+  ['Agent CI: eval gates as a GitHub App', ''],
+  ['Underwrite: small-business credit from filed accounts', ''],
+  ['Close: invoice reconciliation', ''],
+  ['Entity Check: know-your-business checks, company fields only', ''],
+  ['Patchwork: from an issue to a verified pull request', ''],
+];
+// Already on GitHub. Not write-up series, so they're listed separately.
+const REPOS = [
+  { name: 'Farsi Sentence Vault', status: 'Live', what: 'Drills for turning English into Farsi sentences fast, backed by 600 words and phrases and 105 conjugated verbs. Works offline on my phone, and keeps progress online when I sign in.',
     links: [['Open the app', 'https://alirghase.github.io/farsi-sentence-vault/'], ['Code', 'https://github.com/alirghase/farsi-sentence-vault']] },
-  { name: 'Gym Plan', status: 'Live', what: 'My three-day machine programme, with a weights log that tells me when to add weight and shows whether each lift is getting stronger. The log stays on my phone.',
+  { name: 'Gym Plan', status: 'Live', what: 'My three-day machine programme, with a weights log that tells me when to add weight and shows whether each lift is getting stronger. The log syncs across devices when I sign in.',
     links: [['Open the app', 'https://alirghase.github.io/gym-plan/'], ['Code', 'https://github.com/alirghase/gym-plan']] },
+  { name: 'Open Water Fast Hack', status: 'Brief', what: 'A twelve-challenge brief for an analyst agent on Google Cloud: a persona, an MCP server for the UK company register, four agents, evals, guardrails and memory.',
+    links: [['Read the brief', 'https://github.com/alirghase/open-water-fast-hack/blob/main/docs/challenges.md']] },
 ];
 const OTHER = [
   'Error bars for agent evals: why 4% better on 50 cases means nothing',
   'The Data Engineer exam, through a builder\'s eyes',
-  'The Agentic Architect exam after building it for real',
 ];
-const NOW_PART = { northgate: 0, 'gcp-lab': 0 }; // the part being written now
 
 const app = document.getElementById('app');
 const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const proj = id => PROJECTS.find(p => p.id === id);
-const partLabel = (p, i) => i === NOW_PART[p.id] ? '<span class="pill now">Writing now</span>' : '<span class="pill">Coming</span>';
+const statusPill = st => `<span class="pill ${st === 'Now' || st === 'Live' ? 'now' : ''}">${st}</span>`;
+const partLabel = ([, date]) => `<span class="pill">${esc(date)}</span>`;
+const partRows = p => p.parts.map((pt, i) => `<a class="part" href="#/post/${p.id}/${i}"><span class="n">${i + 1}</span><span>${esc(pt[0])}</span>${partLabel(pt)}</a>`).join('');
 
 function projectRow(p) {
   return `<a class="row" href="#/project/${p.id}">
-    <h3>${esc(p.name)}</h3><span class="meta"><span class="pill ${p.status === 'Now' ? 'now' : ''}">${p.status}</span><span>${p.parts.length} parts</span></span>
+    <h3>${esc(p.name)}</h3><span class="meta">${statusPill(p.status)}<span>Launch ${esc(p.launch)}</span></span>
     <p><span class="sub">${esc(p.sub)}</span> · ${esc(p.what)}</p></a>`;
 }
 const subscribe = `<div class="subscribe">
@@ -265,17 +282,31 @@ const views = {
     return `<div class="col">
       <div class="eyebrow">AI engineer</div>
       <h1>I build AI agents and write up what I learn.</h1>
-      <p class="lede">Each project is a series of short write-ups, in the order I build it.</p>
+      <p class="lede">Right now: agents that put numbers on nature you can trace back to a source. Each project is a series of short write-ups, in the order I build it.</p>
       ${THEMES.map(t => `<section>
         <div class="sec-head"><h2>${esc(t.name)}</h2></div>
         <p class="small" style="margin-top:6px">${esc(t.what)}</p>
         ${PROJECTS.filter(p => p.theme === t.id).map(projectRow).join('')}
       </section>`).join('')}
+      <section>
+        <div class="sec-head"><h2>Open source</h2></div>
+        <p class="small" style="margin-top:6px">The pieces the three share, each published as its own package.</p>
+      <div class="grid">
+        ${SPINOFFS.map(s => `<div class="card">
+          <h3>${esc(s.name)}</h3>
+          <p>${esc(s.what)}</p>
+          <div class="the-number"><b>Status</b>Coming with Site Account</div></div>`).join('')}
+      </div>
+      </section>
+      <section>
+        <div class="sec-head"><h2>After the three</h2></div>
+        ${LATER.map(([t, note], i) => `<div class="part"><span class="n">${i + 1}</span><span>${esc(t)}</span><span class="pill">${note ? esc(note) : 'Later'}</span></div>`).join('')}
+      </section>
       <section id="personal-software">
-        <div class="sec-head"><h2>Personal software</h2></div>
-        <p class="small" style="margin-top:6px">Vibe-coded apps for things I use every day.</p>
-        ${APPS.map(a => `<div class="row">
-          <h3>${esc(a.name)}</h3><span class="meta"><span class="pill ${a.status === 'Live' ? 'now' : ''}">${a.status}</span></span>
+        <div class="sec-head"><h2>On GitHub now</h2><a href="https://github.com/alirghase">All repos ↗</a></div>
+        <p class="small" style="margin-top:6px">Vibe-coded apps for things I use every day, and an agent brief.</p>
+        ${REPOS.map(a => `<div class="row">
+          <h3>${esc(a.name)}</h3><span class="meta">${statusPill(a.status)}</span>
           <p>${esc(a.what)}</p>
           ${a.links.length ? `<span class="app-links">${a.links.map(([t, u]) => `<a href="${u}">${t} ↗</a>`).join('')}</span>` : ''}</div>`).join('')}
       </section>
@@ -288,8 +319,8 @@ const views = {
       <div class="eyebrow">Writing</div>
       <h1>All write-ups</h1>
       ${THEMES.map(th => `<section><div class="group-label">${esc(th.name)}</div>
-        ${PROJECTS.filter(p => p.theme === th.id).map(p => `<div class="sec-head" style="margin-top:22px"><h3>${esc(p.name)}</h3><a href="#/project/${p.id}">${p.parts.length} parts →</a></div>
-        ${p.parts.map((t, i) => `<a class="part" href="#/post/${p.id}/${i}"><span class="n">${i + 1}</span><span>${esc(t)}</span>${partLabel(p, i)}</a>`).join('')}`).join('')}</section>`).join('')}
+        ${PROJECTS.filter(p => p.theme === th.id).map(p => `<div class="sec-head" style="margin-top:22px"><h3>${esc(p.sub)}</h3><a href="#/project/${p.id}">${p.parts.length} parts →</a></div>
+        ${partRows(p)}`).join('')}</section>`).join('')}
       <section><div class="sec-head"><h2>Other writing</h2></div>
         ${OTHER.map(t => `<div class="part"><span class="n">·</span><span>${esc(t)}</span><span class="pill">Coming</span></div>`).join('')}</section>
       ${subscribe}
@@ -303,8 +334,19 @@ const views = {
       <h1>${esc(p.name)}</h1>
       <p class="sub" style="margin-bottom:10px">${esc(p.sub)}</p>
       <p class="lede">${esc(p.what)}</p>
+      <div class="finding"><div class="num">[N]<small>Not measured yet</small></div>
+        <div><h3>The number it will publish</h3><p>${esc(p.number)}, with a confidence interval.</p></div></div>
+      <ul class="facts">
+        <li><span>Status</span><span>${statusPill(p.status)}</span></li>
+        <li><span>For</span><span>${esc(p.who)}</span></li>
+        <li><span>Launch</span><span>${esc(p.launch)} (planned)</span></li>
+        <li><span>Ships</span><span>${esc(p.ships)}</span></li>
+        <li><span>Built with</span><span class="stack">${p.stack.map(t => `<span>${esc(t)}</span>`).join('')}</span></li>
+      </ul>
+      <div class="links"><a href="#" title="${esc(p.sub.toLowerCase().replace(/ /g, ''))}.&lt;domain&gt; (placeholder)">Try it (at launch)</a><a href="#" title="placeholder">Code</a><a href="#" title="placeholder">Decision records</a></div>
       <section>
-        ${p.parts.map((t, i) => `<a class="part" href="#/post/${p.id}/${i}"><span class="n">${i + 1}</span><span>${esc(t)}</span>${partLabel(p, i)}</a>`).join('')}
+        <div class="sec-head"><h2>Write-ups</h2></div>
+        ${partRows(p)}
       </section>
       ${subscribe}
     </div>`;
@@ -326,12 +368,12 @@ const views = {
   },
   post(id, i) {
     const p = proj(id) || PROJECTS[0]; i = Math.min(+i || 0, p.parts.length - 1);
-    const prev = i > 0 ? `<a href="#/post/${p.id}/${i - 1}">← Part ${i}: ${esc(p.parts[i - 1])}</a>` : '<span></span>';
-    const next = i < p.parts.length - 1 ? `<a href="#/post/${p.id}/${i + 1}">Part ${i + 2}: ${esc(p.parts[i + 1])} →</a>` : '<span></span>';
+    const prev = i > 0 ? `<a href="#/post/${p.id}/${i - 1}">← Part ${i}: ${esc(p.parts[i - 1][0])}</a>` : '<span></span>';
+    const next = i < p.parts.length - 1 ? `<a href="#/post/${p.id}/${i + 1}">Part ${i + 2}: ${esc(p.parts[i + 1][0])} →</a>` : '<span></span>';
     return `<article class="col post">
       <a class="back" href="#/project/${p.id}">← ${esc(p.sub)}</a>
-      <div class="eyebrow" style="margin-top:22px">${esc(p.sub)} · Part ${i + 1} of ${p.parts.length}</div>
-      <h1>${esc(p.parts[i])}</h1>
+      <div class="eyebrow" style="margin-top:22px">${esc(p.sub)} · Part ${i + 1} of ${p.parts.length} · ${esc(p.parts[i][1])}</div>
+      <h1>${esc(p.parts[i][0])}</h1>
       <div class="number-box"><div class="num">[N]</div><p>The one number this part measured.</p></div>
       <h2>What I built</h2>
       <p class="ph">A few sentences, in plain words.</p>
